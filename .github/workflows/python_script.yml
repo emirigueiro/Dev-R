@@ -10,6 +10,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+      
+      - name: Instalar dependencias Python
+        run: |
+          pip install beautifulsoup4
+        working-directory: Inflation_library  # Cambia al directorio donde se encuentra tu script
 
       - name: Dar permisos de ejecución al archivo
         run: chmod +x Inflation_library/Main.py 
