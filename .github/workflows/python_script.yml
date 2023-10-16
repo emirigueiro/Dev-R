@@ -14,12 +14,17 @@ jobs:
       - name: Instalar dependencias Python
         run: |
           pip install beautifulsoup4
-        working-directory: Inflation_library  # Cambia al directorio donde se encuentra tu script
+        working-directory: Inflation_library  
 
       - name: Instalar dependencias Python
         run: |
           pip install pandas
-        working-directory: Inflation_library  # Cambia al directorio donde se encuentra tu script        
+        working-directory: Inflation_library   
+
+      - name: Instalar dependencias Python
+        run: |
+          pip install clickhouse-connect
+        working-directory: Inflation_library                
 
       - name: Dar permisos de ejecución al archivo
         run: chmod +x Inflation_library/Main.py 
