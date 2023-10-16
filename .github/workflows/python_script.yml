@@ -2,7 +2,7 @@ name: Ejecutar Script Cada Hora
 
 on:
   schedule:
-    - cron: */10 * * * *'  # Programar cada 10 minutos
+    - cron: '*/10 * * * *'  # Programar cada 10 minutos
 
 jobs:
   run-script:
