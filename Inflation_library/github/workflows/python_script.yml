@@ -1,0 +1,15 @@
+name: Ejecutar Script Cada Hora
+
+on:
+  schedule:
+    - cron: */10 * * * *'  # Programar cada 10 minutos
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Ejecutar Script
+        run: python Main.py
