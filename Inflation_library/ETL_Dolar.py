@@ -4,7 +4,7 @@ def carga_inicial():
   import pandas as pd
   import requests
   import re
-  import lxml
+ 
   
    
   web = 'https://dolarhoy.com/'
