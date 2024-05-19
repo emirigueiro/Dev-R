@@ -31,6 +31,11 @@ def unique_list (x):
 
     return unique_list
 
+def unique_percent (x):
+    unique_percent = []
+    [unique_percent.append(f"{int((x2 / x1)*100)}%") for x1, x2 in zip(count_list (x), unique_list (x))]
+    return unique_percent
+
 def empty_list (x):
     column_list = x.columns
     empty_list = []
@@ -41,6 +46,11 @@ def empty_list (x):
 
     return empty_list
 
+def empty_percent (x):
+    empty_percent = []
+    [empty_percent.append(f"{int((x2 / x1)*100)}%") for x1, x2 in zip(count_list (x), empty_list (x))]
+    return empty_percent
+
 def cero_list (x):
     column_list = x.columns
     cero_list = []
@@ -50,6 +60,11 @@ def cero_list (x):
             cero_list.append(column_data.eq('0').sum())
 
     return cero_list
+
+def cero_percent (x):
+    cero_percent = []
+    [cero_percent.append(f"{int((x2 / x1)*100)}%") for x1, x2 in zip(count_list (x), cero_list (x))]
+    return cero_percent
 
 def unique_values_list (x):
     column_list = x.columns
@@ -94,3 +109,27 @@ def null_list (x):
             null_list.append(column_data.isnull().sum())
 
     return null_list
+
+def null_percent (x):
+    null_percent = []
+    [null_percent.append(f"{int((x2 / x1)*100)}%") for x1, x2 in zip(count_list (x), null_list (x))]
+    return null_percent
+
+#Identifica aquellos campos con valores booleanos. Se considera booleano si tiene solo 2 datos distintos. Puede tener valores vacios, null o en cero.
+
+def bool_list (x):
+    column_list = x.columns
+    unique_list = []
+    boolean_list = []    
+    for y in column_list:
+        column_data = x[y]
+        if column_data is not None:
+            unique_list.append(column_data.nunique())
+
+    for x in unique_list:
+        if x == 2:
+           boolean_list.append(True)         
+        else: 
+           boolean_list.append(False)
+
+    return boolean_list
