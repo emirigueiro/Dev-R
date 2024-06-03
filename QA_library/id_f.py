@@ -1,10 +1,9 @@
 import pandas as pd
 import numpy as np
 import re
-import Common_fuctions_QA_library 
+import primary_f as primary_f 
 
-#Identifica si el nombre de la columna contiene la expresión regular "id/ID"
-
+#Indentify of the column name cotain this regular expresion: "ID"
 def id_list(x):
     column_list = x.columns
     patron = re.compile(r"id", re.IGNORECASE)
@@ -18,15 +17,16 @@ def id_list(x):
             
     return(resultados)
 
+#In this fuction creates the ID probability for each column
 def id_probability(x):
-   #Tranforma el True por 1 y False por 0, sobre el return de la funciòn id_list:
+   #Replace True for 1, and Flase for 0. This is necessary for the posterirory probability calculation
    id_re = [0 if x == True else 1 for x in (id_list(x))]
    
-   #Identifica aquellas columnas que cuentan con la misma cantidad de registros ùnicos y distinto:
+   #This part of the process identify the columns that contain the same number of unique and duplicate records
    unique_and_distincts = []
 
-   count_rows = (Common_fuctions_QA_library.count_list(x))
-   count_distinct_rows = (Common_fuctions_QA_library.unique_list(x))
+   count_rows = (primary_f.r_count(x))
+   count_distinct_rows = (primary_f.r_count_distinct(x))
    
    for x1, x2 in zip(count_rows, count_distinct_rows):
       if x1 != x2:
@@ -34,13 +34,13 @@ def id_probability(x):
       elif x1 == x2:
          unique_and_distincts.append(0)
 
-   #Utiliza la funciòn empty_list para identifica aquellas columnas que cuentan con valores vacios y reemplaza Ture x 1 y False x 0:
-   empty_rows = [1 if x > 0 else 0 for x in (Common_fuctions_QA_library.empty_list(x))]
+   #Replace True for 1, and Flase for 0. This is necessary for the posterirory probability calculation
+   empty_rows = [1 if x > 0 else 0 for x in (primary_f.r_empty(x))]
 
-   #Utiliza la funciòn  null_list para identifica aquellas columnas que cuentan con valores nulos y reemplaza Ture x 1 y False x 0:
-   null_rows = [1 if x > 0 else 0 for x in (Common_fuctions_QA_library.null_list(x))]
+   #Replace True for 1, and Flase for 0. This is necessary for the posterirory probability calculation
+   null_rows = [1 if x > 0 else 0 for x in (primary_f.is_null(x))]
 
-   #Creacion variable % de unicos:
+   #Asing a number on each column in order to the subsequent probability calculation
    percent_unique_1 = []
    percent_unique_2 = [] 
    [percent_unique_1.append((x2 / x1)*100) for x1, x2 in zip(count_rows, count_distinct_rows)]
@@ -55,7 +55,7 @@ def id_probability(x):
        elif x <= 20.0:
            percent_unique_2.append(3)
 
-   #Sumarizaciòn:
+   #Sumarization
    final = pd.DataFrame()
    final['id_re'] = id_re 
    final['unique_and_distincts'] = unique_and_distincts
@@ -66,7 +66,7 @@ def id_probability(x):
    final_2 = []
    final_2 = final['id_re'] + final['unique_and_distincts'] + final['empty_rows'] + final['null_rows'] + final['percent_unique']
    
-   #Construcciòn del calcuo de probabilidad
+   #Assign the ID probability for each column 
    id_quality = []
    for x in final_2:
        if x == 0:

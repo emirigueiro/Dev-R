@@ -1,5 +1,5 @@
 import pandas as pd
-import Common_fuctions_QA_library 
+import QA_library.primary_f as primary_f 
 
 import pandas as pd
 

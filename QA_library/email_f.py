@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 import re
-import Common_fuctions_QA_library 
+import primary_f as primary_f 
 
-#Identifica si el nombre de la columna contiene la expresión regular "email|mail|correo"
+#Identify if the column name refers to email "email|mail|correo"
 def email_re(x):
     column_list = x.columns
     patron = re.compile(r"@", re.IGNORECASE)
@@ -17,7 +17,7 @@ def email_re(x):
             
     return(resultados)
 
-#Se cuentan cuantos "@" hay en cada columna
+#Count of "@" on each column
 def email_count_arroba(x):
     column_list = x.columns
     patron = re.compile(r"@")
@@ -31,11 +31,11 @@ def email_count_arroba(x):
     return resultados
 
 
-#Se divide la cantidad de "@" por la cantidad de registros para obtener el % de registros con @ por fila
+#Divide the number of "@" by the number of records to obtain the % of records with @ per row
 def email_percent_arroba(x):
     email_percent_arroba_1 = []
     email_percent_arroba_2 = [] 
-    [email_percent_arroba_1.append((x2 / x1)*100) for x1, x2 in zip(Common_fuctions_QA_library.count_list(x), email_count_arroba(x))]
+    [email_percent_arroba_1.append((x2 / x1)*100) for x1, x2 in zip(primary_f.r_count(x), email_count_arroba(x))]
 
     for x in email_percent_arroba_1:
        if x <= 100.0 and x >= 90.1:
@@ -50,9 +50,7 @@ def email_percent_arroba(x):
     return email_percent_arroba_2
 
 
-#Recorro todas las filas de todas las columnas y si encuentra alguno de los dominios (Hotmail, Gmail, Yahoo, etc.) en al menos una fila, marca esa columna con True.
-
-
+#I loop through all the rows in all the columns and if it finds any of the domains (Hotmail, Gmail, Yahoo, etc.) in at least one row, it marks that column with True
 def email_domain (x):
     column_list = x.columns
     patron = re.compile(r"Hotmail|Gmail|Yahoo|Outlook|Live|Icloud|Fastemail", re.IGNORECASE)
@@ -65,9 +63,11 @@ def email_domain (x):
             resultados.append(False)
     return resultados
 
+
+#This fuction creates the pobability calculation
 def email_probability(x):
    
-   #Sumarizaciòn:
+   #Sumarization
    final = pd.DataFrame()
    final['email_re'] = email_re(x) 
    final['email_percent_arroba'] = email_percent_arroba(x)
@@ -76,7 +76,7 @@ def email_probability(x):
    final_2 = []
    final_2 = final['email_re'] + final['email_percent_arroba'] + final['email_domain']
 
-   #Construcciòn del calcuo de probabilidad
+   #Buold the probabilityh calculation
    email_probability = []
    for x in final_2:
        if x == 0:
