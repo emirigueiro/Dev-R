@@ -1,4 +1,7 @@
-def df_validator(input_data):
+import main as dp
+import pandas as pd
+
+def profile_date(x):
     """
     Valida si la entrada es un DataFrame.
     
@@ -11,7 +14,7 @@ def df_validator(input_data):
     Lanza:
     TypeError si la entrada no es un DataFrame.
     """
-    if isinstance(input_data, pd.DataFrame):
-        return True
+    if isinstance(x, pd.DataFrame):
+        return dp.profile_date(x)
     else:
         raise TypeError("La entrada no es un DataFrame. Por favor, proporciona un DataFrame de pandas.")
