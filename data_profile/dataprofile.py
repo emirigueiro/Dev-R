@@ -5,8 +5,8 @@ import id_f as id_f
 import email_f as email_f
 import primary_f as primary_f
 
-
-def profile_date (x):
+#This function is the main one, it takes the fuctions primary_f, email_f, id_f and combines them in a data frame 
+def dataprofile_fuction (x):
 
     profile_date =                     pd.DataFrame(columns=['columns'])
     profile_date['columns'] =          pd.Series(primary_f.column_list(x))
@@ -32,3 +32,15 @@ def profile_date (x):
         x.add_row(row)
 
     return x
+
+#With this fuction first validate if the input source is a Dataframe, then execute the dataprofile_fuction
+def dataprofile (x):
+    try:
+        # Verificar si es un DataFrame
+        if isinstance(x, pd.DataFrame):
+            return dataprofile_fuction (x)
+        else:
+            return "The file is not a DataFrame."
+    except Exception as e:
+       
+        return f"Error: {e}. The file is not a DataFrame."
