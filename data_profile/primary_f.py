@@ -13,17 +13,32 @@ def column_list (x):
 
 #Creates a list with the records count for each column
 def r_count(x):
-    return [x[y].count() for y in x.columns if x[y] is not None]
+    return [x[y].count() for y in x.columns if x[y].notna().any()]
 
 #---------------------------------------------------------------------------------------------------------------------------
 
 #Creates a list with the distinct records count for each column
-def r_count_distinct(x):
-    return [x[y].nunique() for y in x.columns if x[y] is not None]
+def get_valid_columns(x):
+    # Obtener las columnas donde al menos un valor no es NaN
+    return [col for col in x.columns if x[col].notna().any()]
 
-def r_count_distinct_percent (x):
+def r_count(x):
+    return [x[y].shape[0] for y in x.columns]
+
+def r_count_distinct(x):
+    valid_columns = get_valid_columns(x)
+    return [x[col].nunique() for col in valid_columns]
+
+def r_count_distinct_percent(x):
+    count_rows = r_count(x)
+    count_distinct_rows = r_count_distinct(x)
+
     unique_percent = []
-    [unique_percent.append(f"{int((x2 / x1)*100)}%") for x1, x2 in zip(r_count(x), r_count_distinct(x))]
+    for x1, x2 in zip(count_rows, count_distinct_rows):
+        if x1 != 0:  # Evitar división por cero
+            unique_percent.append(f"{int((x2 / x1) * 100)}%")
+        else:
+            unique_percent.append("0%")
     return unique_percent
 
 #---------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +56,7 @@ def empty_percent (x):
 
 #Creates a list with the count of records that contains value 0 for each column
 def r_cero(x):
-    return [x[y].eq(' ').eq('0').sum() for y in x.columns if x[y] is not None]
+    return [x[y].eq(' ').eq('0').sum() for y in x.columns]
 
 def r_cero_percent (x):
     cero_percent = []

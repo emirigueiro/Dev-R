@@ -13,8 +13,8 @@ def dataprofile_fuction (x):
     profile_date['count'] =            pd.Series(primary_f.r_count(x))
     profile_date['unique'] =           pd.Series(primary_f.r_count_distinct(x))
     profile_date['unique_%'] =         pd.Series(primary_f.r_count_distinct_percent(x))
-    profile_date['id_probabilty'] =    pd.Series(id_f.id_probability(x))
-    profile_date['email_probabilty'] = pd.Series(email_f.email_probability(x))
+    #profile_date['id_probabilty'] =    pd.Series(id_f.id_probability(x))
+    #profile_date['email_probabilty'] = pd.Series(email_f.email_probability(x))
     profile_date['duplicate'] =        profile_date['count'] - profile_date['unique']
     profile_date['numeric'] =          pd.Series(primary_f.is_numeric(x))
     profile_date['letter'] =           pd.Series(primary_f.is_letter(x))
